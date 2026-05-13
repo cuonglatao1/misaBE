@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>MisaBE.BL</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MisaBE.Common\MisaBE.Common.csproj" />
+    <ProjectReference Include="..\MisaBE.DL\MisaBE.DL.csproj" />
+  </ItemGroup>
+</Project>
