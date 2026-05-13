@@ -1,10 +1,10 @@
 using MisaBE.BL.Base;
 using MisaBE.Common.DTOs;
-using MisaBE.Common.Entities;
+using OrganizationEntity = MisaBE.Common.Entities.Organization;
 
 namespace MisaBE.BL.Organization
 {
-    public interface IOrganizationBL : IBaseBL<Organization>
+    public interface IOrganizationBL : IBaseBL<OrganizationEntity>
     {
         Task<ServiceResult> GetAllActiveAsync();
     }

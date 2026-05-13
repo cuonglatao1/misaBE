@@ -1,11 +1,11 @@
 using MisaBE.BL.Base;
 using MisaBE.Common.DTOs;
-using MisaBE.Common.Entities;
 using MisaBE.DL.Organization;
+using OrganizationEntity = MisaBE.Common.Entities.Organization;
 
 namespace MisaBE.BL.Organization
 {
-    public class OrganizationBL : BaseBL<Organization>, IOrganizationBL
+    public class OrganizationBL : BaseBL<OrganizationEntity>, IOrganizationBL
     {
         private readonly IOrganizationDL _orgDL;
 
