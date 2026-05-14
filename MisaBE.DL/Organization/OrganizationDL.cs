@@ -1,11 +1,11 @@
 using Dapper;
 using MisaBE.Common.DTOs;
-using MisaBE.Common.Entities;
 using MisaBE.DL.Base;
+using OrganizationEntity = MisaBE.Common.Entities.Organization;
 
 namespace MisaBE.DL.Organization
 {
-    public class OrganizationDL : BaseDL<Organization>, IOrganizationDL
+    public class OrganizationDL : BaseDL<OrganizationEntity>, IOrganizationDL
     {
         public OrganizationDL(string connectionString) : base(connectionString) { }
 
@@ -13,10 +13,10 @@ namespace MisaBE.DL.Organization
         protected override string PrimaryKeyColumn => "OrganizationId";
         protected override string CodeColumn => "OrganizationCode";
 
-        public override async Task<PagingResult<Organization>> GetPagedAsync(PagingRequest request)
+        public override async Task<PagingResult<OrganizationEntity>> GetPagedAsync(PagingRequest request)
         {
             var items = (await GetAllActiveAsync()).ToList();
-            return new PagingResult<Organization>
+            return new PagingResult<OrganizationEntity>
             {
                 Items = items,
                 TotalRecords = items.Count,
@@ -25,7 +25,7 @@ namespace MisaBE.DL.Organization
             };
         }
 
-        public override async Task<string> InsertAsync(Organization entity)
+        public override async Task<string> InsertAsync(OrganizationEntity entity)
         {
             using var conn = GetConnection();
             entity.OrganizationId = Guid.NewGuid().ToString();
@@ -41,7 +41,7 @@ namespace MisaBE.DL.Organization
             return entity.OrganizationId;
         }
 
-        public override async Task<int> UpdateAsync(Organization entity)
+        public override async Task<int> UpdateAsync(OrganizationEntity entity)
         {
             using var conn = GetConnection();
             entity.ModifiedDate = DateTime.Now;
@@ -56,11 +56,11 @@ namespace MisaBE.DL.Organization
             return await conn.ExecuteAsync(sql, entity);
         }
 
-        public async Task<IEnumerable<Organization>> GetAllActiveAsync()
+        public async Task<IEnumerable<OrganizationEntity>> GetAllActiveAsync()
         {
             using var conn = GetConnection();
             const string sql = "SELECT * FROM pa_organization WHERE IsActive = 1 ORDER BY OrganizationName";
-            return await conn.QueryAsync<Organization>(sql);
+            return await conn.QueryAsync<OrganizationEntity>(sql);
         }
     }
 }

@@ -1,12 +1,12 @@
 using Dapper;
 using MisaBE.Common.DTOs;
-using MisaBE.Common.Entities;
 using MisaBE.DL.Base;
 using System.Text;
+using SalaryCompositionSystemEntity = MisaBE.Common.Entities.SalaryCompositionSystem;
 
 namespace MisaBE.DL.SalaryCompositionSystem
 {
-    public class SalaryCompositionSystemDL : BaseDL<SalaryCompositionSystem>, ISalaryCompositionSystemDL
+    public class SalaryCompositionSystemDL : BaseDL<SalaryCompositionSystemEntity>, ISalaryCompositionSystemDL
     {
         public SalaryCompositionSystemDL(string connectionString) : base(connectionString) { }
 
@@ -14,7 +14,7 @@ namespace MisaBE.DL.SalaryCompositionSystem
         protected override string PrimaryKeyColumn => "SystemId";
         protected override string CodeColumn => "SystemCode";
 
-        public override async Task<PagingResult<SalaryCompositionSystem>> GetPagedAsync(PagingRequest request)
+        public override async Task<PagingResult<SalaryCompositionSystemEntity>> GetPagedAsync(PagingRequest request)
         {
             using var conn = GetConnection();
             var where = new StringBuilder("WHERE IsActive = 1");
@@ -37,9 +37,9 @@ namespace MisaBE.DL.SalaryCompositionSystem
             parameters.Add("PageSize", request.PageSize);
 
             var total = await conn.ExecuteScalarAsync<int>(countSql, parameters);
-            var items = (await conn.QueryAsync<SalaryCompositionSystem>(dataSql, parameters)).ToList();
+            var items = (await conn.QueryAsync<SalaryCompositionSystemEntity>(dataSql, parameters)).ToList();
 
-            return new PagingResult<SalaryCompositionSystem>
+            return new PagingResult<SalaryCompositionSystemEntity>
             {
                 Items = items,
                 TotalRecords = total,
@@ -48,7 +48,7 @@ namespace MisaBE.DL.SalaryCompositionSystem
             };
         }
 
-        public override async Task<string> InsertAsync(SalaryCompositionSystem entity)
+        public override async Task<string> InsertAsync(SalaryCompositionSystemEntity entity)
         {
             using var conn = GetConnection();
             entity.SystemId = Guid.NewGuid().ToString();
@@ -69,7 +69,7 @@ namespace MisaBE.DL.SalaryCompositionSystem
             return entity.SystemId;
         }
 
-        public override async Task<int> UpdateAsync(SalaryCompositionSystem entity)
+        public override async Task<int> UpdateAsync(SalaryCompositionSystemEntity entity)
         {
             using var conn = GetConnection();
             entity.ModifiedDate = DateTime.Now;

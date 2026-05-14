@@ -1,11 +1,11 @@
 using MisaBE.BL.Base;
 using MisaBE.Common.DTOs;
-using MisaBE.Common.Entities;
 using MisaBE.DL.GridConfig;
+using GridConfigEntity = MisaBE.Common.Entities.GridConfig;
 
 namespace MisaBE.BL.GridConfig
 {
-    public class GridConfigBL : BaseBL<GridConfig>, IGridConfigBL
+    public class GridConfigBL : BaseBL<GridConfigEntity>, IGridConfigBL
     {
         private readonly IGridConfigDL _gridConfigDL;
 
@@ -21,7 +21,7 @@ namespace MisaBE.BL.GridConfig
         }
 
         public async Task<ServiceResult> SaveConfigsAsync(
-            string gridId, IEnumerable<GridConfig> configs, string? userId = null)
+            string gridId, IEnumerable<GridConfigEntity> configs, string? userId = null)
         {
             var count = await _gridConfigDL.SaveConfigsAsync(gridId, configs, userId);
             return ServiceResult.Ok(count, "Lưu cấu hình thành công");

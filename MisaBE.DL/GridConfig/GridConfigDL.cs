@@ -1,11 +1,11 @@
 using Dapper;
 using MisaBE.Common.DTOs;
-using MisaBE.Common.Entities;
 using MisaBE.DL.Base;
+using GridConfigEntity = MisaBE.Common.Entities.GridConfig;
 
 namespace MisaBE.DL.GridConfig
 {
-    public class GridConfigDL : BaseDL<GridConfig>, IGridConfigDL
+    public class GridConfigDL : BaseDL<GridConfigEntity>, IGridConfigDL
     {
         public GridConfigDL(string connectionString) : base(connectionString) { }
 
@@ -13,14 +13,20 @@ namespace MisaBE.DL.GridConfig
         protected override string PrimaryKeyColumn => "ConfigId";
         protected override string CodeColumn => "ColumnField";
 
-        public override async Task<PagingResult<GridConfig>> GetPagedAsync(PagingRequest request)
+        public override async Task<PagingResult<GridConfigEntity>> GetPagedAsync(PagingRequest request)
         {
             using var conn = GetConnection();
-            var items = (await conn.QueryAsync<GridConfig>("SELECT * FROM pa_grid_config ORDER BY SortOrder")).ToList();
-            return new PagingResult<GridConfig> { Items = items, TotalRecords = items.Count, PageNumber = 1, PageSize = items.Count };
+            var items = (await conn.QueryAsync<GridConfigEntity>("SELECT * FROM pa_grid_config ORDER BY SortOrder")).ToList();
+            return new PagingResult<GridConfigEntity>
+            {
+                Items = items,
+                TotalRecords = items.Count,
+                PageNumber = 1,
+                PageSize = items.Count
+            };
         }
 
-        public override async Task<string> InsertAsync(GridConfig entity)
+        public override async Task<string> InsertAsync(GridConfigEntity entity)
         {
             using var conn = GetConnection();
             entity.ConfigId = Guid.NewGuid().ToString();
@@ -46,7 +52,7 @@ namespace MisaBE.DL.GridConfig
             return entity.ConfigId;
         }
 
-        public override async Task<int> UpdateAsync(GridConfig entity)
+        public override async Task<int> UpdateAsync(GridConfigEntity entity)
         {
             using var conn = GetConnection();
             entity.ModifiedDate = DateTime.Now;
@@ -63,17 +69,17 @@ namespace MisaBE.DL.GridConfig
             return await conn.ExecuteAsync(sql, entity);
         }
 
-        public async Task<IEnumerable<GridConfig>> GetByGridIdAsync(string gridId, string? userId = null)
+        public async Task<IEnumerable<GridConfigEntity>> GetByGridIdAsync(string gridId, string? userId = null)
         {
             using var conn = GetConnection();
             const string sql = @"
                 SELECT * FROM pa_grid_config
                 WHERE GridId = @GridId AND (UserId = @UserId OR UserId IS NULL)
                 ORDER BY SortOrder";
-            return await conn.QueryAsync<GridConfig>(sql, new { GridId = gridId, UserId = userId });
+            return await conn.QueryAsync<GridConfigEntity>(sql, new { GridId = gridId, UserId = userId });
         }
 
-        public async Task<int> SaveConfigsAsync(string gridId, IEnumerable<GridConfig> configs, string? userId = null)
+        public async Task<int> SaveConfigsAsync(string gridId, IEnumerable<GridConfigEntity> configs, string? userId = null)
         {
             using var conn = GetConnection();
             await conn.OpenAsync();

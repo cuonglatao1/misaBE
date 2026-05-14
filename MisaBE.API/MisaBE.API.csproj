@@ -6,7 +6,7 @@
     <RootNamespace>MisaBE.API</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MisaBE.BL\MisaBE.BL.csproj" />

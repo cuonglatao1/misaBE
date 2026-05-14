@@ -1,6 +1,6 @@
 using Dapper;
 using MisaBE.Common.DTOs;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 
 namespace MisaBE.DL.Base
 {
